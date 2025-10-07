@@ -3,32 +3,34 @@ package com.example.sensores;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listaSensores;
-    private Button btnActualizar;
+    private RecyclerView recyclerSensores;
     private SensorManager gestorSensores;
+    private SensorAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listaSensores = findViewById(R.id.listaSensores);
-        btnActualizar = findViewById(R.id.btnActualizar);
+        recyclerSensores = findViewById(R.id.recyclerSensores);
 
-        //Llamar al servicio de sensores
+
         gestorSensores = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        //Metodo que carga la lista de los sensores
+        recyclerSensores.setLayoutManager(new GridLayoutManager(this, 2));
+        adapter = new SensorAdapter();
+        recyclerSensores.setAdapter(adapter);
+
+
         CargarSensores();
 
 
@@ -36,17 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void CargarSensores() {
         List<Sensor> lista = gestorSensores.getSensorList(Sensor.TYPE_ALL);
-        List<String> nombreSensores = new ArrayList<>();
+        List<SensorInfo> detalleSensores = new ArrayList<>();
 
-        for(Sensor sensor : lista){
-            nombreSensores.add(sensor.getName());
+        for (Sensor sensor : lista) {
+            SensorInfo info = new SensorInfo(
+                    sensor.getName(),
+                    sensor.getVendor(),
+                    sensor.getVersion(),
+                    sensor.getPower()
+            );
+            detalleSensores.add(info);
         }
-        ArrayAdapter<String> adaptador = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                nombreSensores
-        );
 
-        listaSensores.setAdapter(adaptador);
+        adapter.setItems(detalleSensores);
     }
 }

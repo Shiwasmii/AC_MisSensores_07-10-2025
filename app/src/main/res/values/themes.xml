@@ -2,7 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Sensores" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
+        <item name="colorSecondary">@color/md_theme_secondary</item>
+        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="android:textColor">@color/md_theme_onBackground</item>
     </style>
 
     <style name="Theme.Sensores" parent="Base.Theme.Sensores" />
